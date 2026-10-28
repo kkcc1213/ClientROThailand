@@ -1,0 +1,26 @@
+LIBRARY basesdk
+EXPORTS
+    Base_Initialize=S_Base_Initialize
+    Base_UnInitialize=S_Base_UnInitialize
+    Base_GetUser=S_Base_GetUser
+    Base_GetAccessToken=S_Base_GetAccessToken
+    Base_GetShutdown=S_Base_GetShutdown
+    Base_RunCallback=S_Base_RunCallback
+    Base_RestartAppIfNecessary=S_Base_RestartAppIfNecessary
+    ??0StovePCInitializeParam@Base@PCSDK@Stove@@QAE@XZ=@S_Ctor@8
+    ??0StovePCUser@Base@PCSDK@Stove@@QAE@XZ=@S_Ctor@8
+    ??1CallbackResult@PCSDK@Stove@@QAE@XZ=@S_Dtor@8
+    ??1StovePCInitializeParam@Base@PCSDK@Stove@@QAE@XZ=@S_Dtor@8
+    ??1StovePCSignin@Base@PCSDK@Stove@@QAE@XZ=@S_Dtor@8
+    ??1StovePCToken@Base@PCSDK@Stove@@QAE@XZ=@S_Dtor@8
+    ??1StovePCUser@Base@PCSDK@Stove@@QAE@XZ=@S_Dtor@8
+    ??4Result@PCSDK@Stove@@QAEAAU012@ABU012@@Z=@S_Assign@12
+    ?get@?$_Ptr_base@VWorld@Core@Engine@Stove@@@std@@IBEPAVWorld@Core@Engine@Stove@@XZ=@S_GetPtr@8
+    ?GetGameUserId@StovePCUser@Base@PCSDK@Stove@@QBE_KXZ=@S_GetU64@8
+    ?GetMemberNumber@StovePCUser@Base@PCSDK@Stove@@QBE_KXZ=@S_GetU64@8
+    ?GetResult@CallbackResult@PCSDK@Stove@@QBE?AUResult@23@XZ=@S_GetResult@12
+    ?GetValue@StovePCLogEventParameter@Base@PCSDK@Stove@@QBEPB_WXZ=@S_GetWStr@8
+    ?IsSuccessful@Result@PCSDK@Stove@@QBE_NXZ=@S_IsSuccessful@8
+    ?SetCategory2@StovePCLogEvent@Base@PCSDK@Stove@@QAEXPB_W@Z=@S_Set4@12
+    ?SetValue@StovePCLogEventParameter@Base@PCSDK@Stove@@QAEXPB_W@Z=@S_Set4@12
+    ?SetWorldId@StovePCGameProfile@Base@PCSDK@Stove@@QAEXPB_W@Z=@S_Set4@12

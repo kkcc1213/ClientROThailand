@@ -1,0 +1,8 @@
+-- จาก AcidMarco/ro-releases (GPL-3.0) systems/client_emote_ui
+EMOTION_CLIENT_SETTING = {
+	IntendedDelay = 0
+}
+
+getEmotionClientSetting = function(in_type)
+	return EMOTION_CLIENT_SETTING[in_type]
+end
