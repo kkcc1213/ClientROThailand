@@ -26,10 +26,10 @@ Fork ของ [rAthena-Thailand/ClientROThailand](https://github.com/rAthena-Th
 | ไฟล์ Lua ใน overlay ไม่ตรงกันเอง (`jobname.lub` อ้าง ID ที่ไม่มี) และขาดไฟล์ที่ต้องมาจาก kRO | comment บรรทัดที่อ้าง ID ที่ไม่มีใน `npcidentity` ของ iRO (`-- [no-iRO-id]`) · เพิ่ม `pcjobnamegender*`, `shadowtable_f`, CashEmotion, `common.lub`, navigation, damageskin (บรรทัดแรกของแต่ละไฟล์บอกที่มา) |
 | exe ตั้ง `requireAdministrator` แต่ไม่จำเป็น | `start-client.cmd` ใช้ `__COMPAT_LAYER=RunAsInvoker` |
 | exe รุ่นนี้เขียนทับ header ของ `data.grf` บางรุ่น | สคริปต์คัดลอก `data.grf` แล้วตั้ง read-only |
+| ไฟล์ในโฟลเดอร์ชื่อเกาหลีของ overlay (`À¯ÀúÀÎÅÍÆäÀÌ½º` ฯลฯ 124,136 ไฟล์) ตั้งชื่อตาม codepage 1252 → client บน Windows ภาษาไทยหาไม่เจอ | `tools/grf/overlay_manifest.py` แปลงชื่อกลับเป็นไบต์ cp949 แล้วแพ็กเข้า `rothai.grf` (GRF เทียบชื่อเป็นไบต์ ไม่ขึ้นกับ codepage) |
 
 ## ข้อจำกัดที่รู้
-- ภาพ UI ที่แปลไทยในโฟลเดอร์ชื่อเกาหลีของ overlay (`À¯ÀúÀÎÅÍÆäÀÌ½º` ฯลฯ) ตั้งชื่อตาม codepage 1252 → บน Windows ภาษาไทย client หาไม่เจอ (ใช้ภาพจาก `data.grf` แทน) · ทางแก้ที่วางไว้: แพ็กเข้า GRF ด้วย `tools/grf/build_grf.py`
-- error Lua ที่ยังเหลือแต่ไม่ทำให้ล้ม: `SystemEN\Rune\System_table.lub` / `CRuneSystemMgr file Init`
+- error ที่ยังเหลือแต่ไม่ทำให้ล้ม: `SystemEN\Rune\System_table.lub` / `CRuneSystemMgr file Init` (ระบบ Rune) — เปลี่ยนเป็นไฟล์รุ่นล่าสุดของ ROenglishRE หรือย้ายไปไว้ใต้ `data\` แล้วก็ยังขึ้น
 - ภาพหน้าล็อกอินเป็นภาพแทนที่วาดง่าย ๆ
 
 ## เครื่องมือหาปัญหา (`tools/diagnostics`)

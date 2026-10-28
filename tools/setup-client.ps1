@@ -12,7 +12,8 @@
    3. build STOVE stub + binkw32 proxy (tools\build-native.ps1)
    4. ใช้ VC++ runtime ของ Windows แทนรุ่นเก่าที่ติดมากับ client ฐาน
    5. คัด data.grf (ตั้ง read-only เพราะ exe 2025 เขียนทับ header ของ grf บางรุ่น)
-   6. สร้าง rothai.grf: หน้าล็อกอินแบบใหม่ที่วาดเอง + login.rsw (prontera จาก client ฐาน)
+   6. สร้าง rothai.grf: ไฟล์ overlay ในโฟลเดอร์ชื่อเกาหลี (ชื่อแปลงกลับเป็น cp949) + หน้าล็อกอินแบบใหม่ที่วาดเอง
+      + login.rsw (prontera จาก client ฐาน)
    7. DATA.ini, licence.txt, start-client.cmd
 
 .EXAMPLE
@@ -90,7 +91,9 @@ $grfTools = Join-Path $PSScriptRoot 'grf'
 Invoke-Py @("$grfTools\make_login_assets.py", "$work\login") | Out-Null
 Invoke-Py @("$grfTools\extract_grf_file.py", "$BaseClient\data.grf", 'data/prontera.rsw', "$work\login.rsw")
 Invoke-Py @("$grfTools\login_manifest.py", "$work\login", "$work\login.rsw", "$work\manifest.txt")
-Invoke-Py @("$grfTools\build_grf.py", "$OutDir\rothai.grf", "$work\manifest.txt")
+# ไฟล์ overlay ในโฟลเดอร์ชื่อเกาหลี (ภาพ UI แปลไทย, sprite ฯลฯ) — เป็นไฟล์หลวมแล้ว client บน Windows ภาษาไทยหาไม่เจอ
+Invoke-Py @("$grfTools\overlay_manifest.py", "$clientSrc\$Variant\data", "$work\overlay.txt")
+Invoke-Py @("$grfTools\build_grf.py", "$OutDir\rothai.grf", "$work\overlay.txt", "$work\manifest.txt")
 
 Step '7. DATA.ini · licence.txt · start-client.cmd'
 [IO.File]::WriteAllText("$OutDir\DATA.ini", "[Data]`r`n0=rothai.grf`r`n1=data.grf`r`n", [Text.Encoding]::ASCII)
