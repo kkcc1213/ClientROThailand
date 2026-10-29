@@ -58,10 +58,9 @@ RuneSettbl_Reward = {
 function main_runeset_reward()
 	for TagID,TagData in pairs(RuneSettbl_Reward) do
 		for RuneSetID,RuneData in pairs(TagData) do
-			result = AddRuneSetReward(TagID, RuneSetID, RuneData[1], RuneData[2], RuneData[3], RuneData[4], RuneData[5], RuneData[6], RuneData[7])
-			if not result then
-				return false, msg
-			end
+			-- [ROThailand-local] ไม่มีรูนลงทะเบียน (runesystem_f.lub เป็น stub) จึงเพิ่มไม่สำเร็จทุกชุด
+			-- เดิม return false, msg (msg เป็น nil) ทำให้ขึ้น "second return value is not string" ตอนเปิดเกม → ข้ามไปแทน
+			AddRuneSetReward(TagID, RuneSetID, RuneData[1], RuneData[2], RuneData[3], RuneData[4], RuneData[5], RuneData[6], RuneData[7])
 		end
 	end
 	return true, "good"

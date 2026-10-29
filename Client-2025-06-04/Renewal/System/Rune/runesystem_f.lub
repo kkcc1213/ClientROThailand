@@ -1,0 +1,7 @@
+-- [ROThailand-local] exe 2025 ของ kRO โหลด System\Rune\*.lub ด้วยชื่อแบบ kRO แล้วเรียก main_rune()
+-- ชุด ROenglishRE (SystemEN\Rune) ไม่มีไฟล์นี้ · rAthena ยังไม่รองรับระบบ Rune ของ kRO
+-- จึงให้ main_rune ไม่ส่งข้อมูลรูนใด ๆ แค่ให้ CRuneSystemMgr โหลดผ่านโดยไม่ขึ้นกล่อง error ตอนเปิดเกม
+-- ไฟล์ชื่อ kRO อื่น ๆ ใน System\Rune คัดจาก SystemEN\Rune โดย tools\setup-client.ps1
+function main_rune()
+	return true, "good"
+end

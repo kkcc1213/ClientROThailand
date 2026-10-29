@@ -8,12 +8,12 @@
 
   ขั้นตอน:
    1. คัด DLL / BGM / AI / System / skin / Setup.exe จาก client ฐาน (ไม่เอา exe และ grf อื่น)
-   2. วาง overlay (Client-2025-06-04\<Variant>) ทับ + exe ที่ patch แล้ว
+   2. วาง overlay (Client-2025-06-04\<Variant>) ทับ + exe ที่ patch แล้ว + คัด SystemEN\Rune เป็น System\Rune ชื่อแบบ kRO
    3. build STOVE stub + binkw32 proxy (tools\build-native.ps1)
    4. ใช้ VC++ runtime ของ Windows แทนรุ่นเก่าที่ติดมากับ client ฐาน
    5. คัด data.grf (ตั้ง read-only เพราะ exe 2025 เขียนทับ header ของ grf บางรุ่น)
    6. สร้าง rothai.grf: ไฟล์ overlay ในโฟลเดอร์ชื่อเกาหลี (ชื่อแปลงกลับเป็น cp949) + หน้าล็อกอินแบบใหม่ที่วาดเอง
-      + login.rsw (prontera จาก client ฐาน)
+      + login.rsw (prontera จาก client ฐาน) · sprite อีโมชันของ client ฐานเป็น data\sprite\emotion\iro_emotion.*
    7. DATA.ini, licence.txt, start-client.cmd
 
 .EXAMPLE
@@ -62,6 +62,17 @@ foreach ($dir in 'BGM', 'AI', 'System', 'skin') {
 Step "2. overlay $Variant + exe"
 Copy-Tree "$clientSrc\$Variant" $OutDir @('/E', '/MT:32')
 Copy-Item "$clientSrc\$exeName" $OutDir -Force
+# Rune: exe โหลดบางไฟล์จาก System\Rune\<ชื่อ kRO> (แพตช์ WARP เปลี่ยนเป็น SystemEN\Rune\<ชื่อ ROenglishRE> ไม่ครบ)
+# ไม่มีไฟล์ใดไฟล์หนึ่ง = ขึ้น error "SystemEN\Rune\System_table.lub" + "CRuneSystemMgr file Init" ตอนเปิดเกม
+$runeNames = @{
+    'System_table' = 'runeSystem_table'; 'itemDecom' = 'itemDecom'; 'systemid' = 'runesystemid'
+    'info' = 'rune_info'; 'desc' = 'rune_desc'; 'set_info' = 'runeset_info'; 'set_desc' = 'runeset_desc'
+    'set_reward' = 'runeset_reward'; 'systemInfo' = 'runesystemInfo'
+}
+New-Item -ItemType Directory -Force "$OutDir\System\Rune" | Out-Null
+foreach ($old in $runeNames.Keys) {
+    Copy-Item "$OutDir\SystemEN\Rune\$old.lub" "$OutDir\System\Rune\$($runeNames[$old]).lub" -Force
+}
 
 Step '3. build STOVE stub + binkw32 proxy'
 # ใช้ binkw32 ของ client ฐานเสมอ (ขั้น 1 เพิ่งคัด binkw32.dll ตัวเดิมทับ proxy ของรอบก่อน)
@@ -94,6 +105,13 @@ Invoke-Py @("$grfTools\login_manifest.py", "$work\login", "$work\login.rsw", "$w
 # ไฟล์ overlay ในโฟลเดอร์ชื่อเกาหลี (ภาพ UI แปลไทย, sprite ฯลฯ) — เป็นไฟล์หลวมแล้ว client บน Windows ภาษาไทยหาไม่เจอ
 Invoke-Py @("$grfTools\overlay_manifest.py", "$clientSrc\$Variant\data", "$work\overlay.txt")
 Invoke-Py @("$grfTools\build_grf.py", "$OutDir\rothai.grf", "$work\overlay.txt", "$work\manifest.txt")
+# อีโมชัน: client ฐานไม่มี sprite\emotion\basic.* ของ kRO → ใช้ sprite\이팩트\emotion.* ของ client ฐานแทน
+# ต้องเป็นชื่อ ASCII เพราะ client แปลง path จาก Lua เป็น codepage ของ Windows (ไทยไม่มีอักษรเกาหลี) · ดู CashEmotion\cashemotionlist_f.lub
+$effectDir = "$([char]0xC774)$([char]0xD329)$([char]0xD2B8)"  # 이팩트
+New-Item -ItemType Directory -Force "$OutDir\data\sprite\emotion" | Out-Null
+foreach ($ext in 'act', 'spr') {
+    Invoke-Py @("$grfTools\extract_grf_file.py", "$BaseClient\data.grf", "data/sprite/$effectDir/emotion.$ext", "$OutDir\data\sprite\emotion\iro_emotion.$ext")
+}
 
 Step '7. DATA.ini · licence.txt · start-client.cmd'
 [IO.File]::WriteAllText("$OutDir\DATA.ini", "[Data]`r`n0=rothai.grf`r`n1=data.grf`r`n", [Text.Encoding]::ASCII)

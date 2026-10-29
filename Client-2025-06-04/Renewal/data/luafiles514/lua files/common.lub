@@ -56,12 +56,12 @@ getHelpMsg = function(idx)
   return HelpMsgStr[idx]
 end
 
--- enum: แปลงรายชื่อเป็นตาราง ชื่อ -> ลำดับเริ่ม 0 (ET_SURPRISE = 0 ตรงกับรหัส emotion ของ RO)
+-- enum: แปลงรายชื่อเป็นตาราง ชื่อ -> ลำดับเริ่ม 1 (ET_SURPRISE = 1 · CashEmotion ลบ 1 เป็นรหัส emotion ของ RO เอง)
 if enum == nil then
 	enum = function(tbl)
 		local ret = {}
 		for i, v in ipairs(tbl) do
-			ret[v] = i - 1
+			ret[v] = i
 		end
 		return ret
 	end
